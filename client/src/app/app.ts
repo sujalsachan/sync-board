@@ -9,5 +9,5 @@ import { NavbarComponent } from './components/navbar-component/navbar-component'
   styleUrl: './app.scss'
 })
 export class App {
-  protected readonly title = signal('client');
+  protected readonly title = signal('SyncBoard');
 }
