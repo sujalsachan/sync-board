@@ -1,0 +1,10 @@
+form div {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;    
+}
+
+.signUpForm input {
+    border-radius: 0;
+    border-color: black;
+}

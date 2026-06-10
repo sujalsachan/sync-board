@@ -1,15 +1,15 @@
 
 <div class="min-vh-100 min-vw-100 d-flex align-items-center justify-content-center">
-    <form [formGroup]="loginForm" (ngSubmit)="handleSubmit()">
+    <form class="bg-danger-subtle p-4 rounded-4" [formGroup]="loginForm" (ngSubmit)="handleSubmit()">
         <div id="div-email" class="form-div-layout">
-        <label for="input-email" id="label-email">Email</label>
-        <input id="input-email" type="email" formControlName="email" autocomplete="email"/>
+        <label for="input-email" class="form-label" id="label-email">Email</label>
+        <input id="input-email" type="email" class="form-control"  formControlName="email" autocomplete="email" required/>
         </div>
 
         <div id="div-password" class="form-div-layout">
-        <label for="input-password" id="label-password">Password</label>
-        <input id="input-password" type="password" formControlName="password" autocomplete="current-password"/>
+        <label for="input-password" class="form-label" id="label-password">Password</label>
+        <input id="input-password" type="password" class="form-control" formControlName="password" autocomplete="current-password" required/>
         </div>
-        <button id="button-login" type="submit">Login</button>
+        <button id="button-login" type="submit" class="btn btn-primary">Login</button>
     </form>
 </div>

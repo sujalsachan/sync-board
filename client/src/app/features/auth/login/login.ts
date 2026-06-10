@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-login',
@@ -8,6 +9,9 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
   styleUrl: './login.scss',
 })
 export class Login {
+
+  authService = inject(AuthService);
+
   loginForm = new FormGroup({
     email : new FormControl(''),
     password : new FormControl(''),
@@ -17,6 +21,15 @@ export class Login {
     const email = this.loginForm.controls.email;
     const password = this.loginForm.controls.password;
 
-    console.log("Form Submitted: ", email.value, password.value)
+    if(! (email.value && password.value) ) {
+      console.log("Empty fields found");
+      return;
+    }
+
+
+    this.authService.login( email.value, password.value);
+
+    email.reset('');
+    password.reset('');
   }
 }
