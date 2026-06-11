@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { Component, inject } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { environment } from '../../../../environment';
 import { email } from '@angular/forms/signals';
 
 @Component({
@@ -10,15 +12,21 @@ import { email } from '@angular/forms/signals';
 })
 export class Signup {
 
+  http = inject(HttpClient);
+  url = environment.BACKEND_URL+'/auth';
+
   signUpForm = new FormGroup({
-    name : new FormControl(''),
-    phoneNumber : new FormControl(''),
-    email : new FormControl(''),
-    password : new FormControl(''),
-    confirmPassword : new FormControl(''),
+    name : new FormControl('', Validators.required),
+    phoneNumber : new FormControl('', Validators.required),
+    email : new FormControl('', Validators.required),
+    password : new FormControl('', Validators.required),
+    confirmPassword : new FormControl('', Validators.required),
   })
 
   handleSubmit() {
-    console.log(this.signUpForm.controls);
+    console.log('Signing Up');
+    const { confirmPassword, ...signupData } = this.signUpForm.value;
+
+    this.http.post(this.url+'/signup', signupData);
   }
 }
