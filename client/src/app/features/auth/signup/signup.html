@@ -29,6 +29,6 @@
         <input id="input-confirm-password" type="password" class="form-control" formControlName="confirmPassword" autocomplete="new-password"/>
         </div>
         
-        <button id="button-login" type="submit" class="btn btn-secondary mt-2 w-100 rounded-0">Sign Up</button>
+        <button id="button-login" [disabled]="isLoading" type="submit" class="btn btn-secondary mt-2 w-100 rounded-0">Sign Up</button>
     </form>
 </div>

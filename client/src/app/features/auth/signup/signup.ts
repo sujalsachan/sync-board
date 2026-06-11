@@ -23,10 +23,29 @@ export class Signup {
     confirmPassword : new FormControl('', Validators.required),
   })
 
+  isLoading = false;
+
   handleSubmit() {
     console.log('Signing Up');
-    const { confirmPassword, ...signupData } = this.signUpForm.value;
+    this.isLoading = true;
 
-    this.http.post(this.url+'/signup', signupData);
+    const signupData = this.signUpForm.controls;
+
+    this.http.post(this.url+'/signup', signupData).subscribe({
+      next: (response) => {
+        console.log('User Created');
+      },
+      error: (err) => {
+        console.log('User not created, error :', err  );
+      },
+    })
+
+    setTimeout(() => {
+    this.isLoading = false;
+    }, 2000);
+
+    console.log(signupData)
+    console.log(this.url+'/signup')
+    
   }
 }
