@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../auth.service';
 
 @Component({
@@ -13,23 +13,24 @@ export class Login {
   authService = inject(AuthService);
 
   loginForm = new FormGroup({
-    email : new FormControl(''),
-    password : new FormControl(''),
+    email : new FormControl('', Validators.required),
+    password : new FormControl('', Validators.required),
   });
 
   handleSubmit() {
-    const email = this.loginForm.controls.email;
-    const password = this.loginForm.controls.password;
+    const loginData = this.loginForm.value;
 
-    if(! (email.value && password.value) ) {
+    if(! (loginData.password && loginData.email) ) {
       console.log("Empty fields found");
       return;
     }
 
+    const data = {
+      email : loginData.email,
+      password : loginData.password,
+    }
 
-    this.authService.login( email.value, password.value);
-
-    email.reset('');
-    password.reset('');
+    console.log('login ts', data);
+    this.authService.login( data );
   }
 }

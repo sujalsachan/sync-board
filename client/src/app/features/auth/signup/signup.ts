@@ -1,8 +1,6 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { environment } from '../../../../environment';
-import { email } from '@angular/forms/signals';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-signup',
@@ -12,40 +10,36 @@ import { email } from '@angular/forms/signals';
 })
 export class Signup {
 
-  http = inject(HttpClient);
-  url = environment.BACKEND_URL+'/auth';
+  authService = inject(AuthService);
 
   signUpForm = new FormGroup({
-    name : new FormControl('', Validators.required),
-    phoneNumber : new FormControl('', Validators.required),
-    email : new FormControl('', Validators.required),
-    password : new FormControl('', Validators.required),
-    confirmPassword : new FormControl('', Validators.required),
-  })
+    name: new FormControl('', Validators.required),
+    phoneNumber: new FormControl('', Validators.required),
+    email: new FormControl('', Validators.required),
+    password: new FormControl('', Validators.required),
+    confirmPassword: new FormControl('', Validators.required),
+  });
 
-  isLoading = false;
+  isLoading = signal<boolean>(false);
 
   handleSubmit() {
     console.log('Signing Up');
-    this.isLoading = true;
+    this.isLoading.set(true);
 
-    const signupData = this.signUpForm.controls;
+    const newUser = {
+      name : this.signUpForm.value.name,
+      email : this.signUpForm.value.email,
+      phone : this.signUpForm.value.phoneNumber,
+      password : this.signUpForm.value.password
+    }
 
-    this.http.post(this.url+'/signup', signupData).subscribe({
-      next: (response) => {
-        console.log('User Created');
-      },
-      error: (err) => {
-        console.log('User not created, error :', err  );
-      },
-    })
+    this.authService.signup(newUser);
 
     setTimeout(() => {
-    this.isLoading = false;
+      this.isLoading.set(false);
+      this.authService.authError.set('');
     }, 2000);
 
-    console.log(signupData)
-    console.log(this.url+'/signup')
-    
+    console.log(newUser);
   }
 }

@@ -13,10 +13,6 @@ connectDB();
 app.use(cors());
 app.use(express.json());
 
-app.use((req, res, next) => {
-    console.log('Hello', req.body);
-    next();
-});
 app.use('/auth', authRoutes);
 
 app.get('/', (req, res) => {

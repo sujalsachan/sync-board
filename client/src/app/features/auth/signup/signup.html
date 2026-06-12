@@ -1,6 +1,6 @@
 
 <div class="min-vh-100 min-vw-100 d-flex align-items-center justify-content-center">
-    <form class="my-4 border border-1 border-black p-4 signUpForm" [formGroup]="signUpForm" (ngSubmit)="handleSubmit()">
+    <form class="my-4 border border-1 border-black p-4 signUpForm w-50" [formGroup]="signUpForm" (ngSubmit)="handleSubmit()">
 
         <h2 class="text-center mb-4">Sign Up </h2>
 
@@ -29,6 +29,9 @@
         <input id="input-confirm-password" type="password" class="form-control" formControlName="confirmPassword" autocomplete="new-password"/>
         </div>
         
-        <button id="button-login" [disabled]="isLoading" type="submit" class="btn btn-secondary mt-2 w-100 rounded-0">Sign Up</button>
+        @if (authService.authError()) {
+            <p class="text-danger fw-2">{{authService.authError()}}</p>
+        }
+        <button id="button-login" [disabled]="isLoading() || !signUpForm.valid" type="submit" class="btn btn-secondary mt-2 w-100 rounded-0">Sign Up</button>
     </form>
 </div>
