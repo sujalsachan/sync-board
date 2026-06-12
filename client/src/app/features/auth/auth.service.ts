@@ -1,23 +1,39 @@
-import { Service, signal, Signal } from "@angular/core";
+import { inject, Service, signal, Signal } from "@angular/core";
 import { User } from "./user.model";
+import { HttpClient } from "@angular/common/http";
+import { environment } from "../../../environment";
 
 @Service() 
 export class AuthService {
-    defaultUser : User= {
-        name:"Sujal",
-        email : "sujal@gmail.com",
-        password : "12345678",
-    };
-
     user = signal<User | null>(null);
+    http = inject(HttpClient);
+    url = environment.BACKEND_URL + '/auth';
 
-    login(email:string, password:string) {
-        this.user.set({
-            ...this.defaultUser,
-            email : email,
-            password : password,
+    authError = signal<string>('');
+
+    login(data: {}) {
+        
+        this.http.post(this.url+'/login', data).subscribe({
+            next: (response) => {
+                console.log('Login Success', response);
+            }, 
+            error:(err) => {
+                console.log('Login Failed', err);
+            } 
         })
 
         console.log(this.user());
+    }
+
+    signup(data : {}) {
+         this.http.post(this.url + '/signup', data).subscribe({
+      next: (response) => {
+        console.log('Sign Up success');
+      },
+      error: (err) => {
+        console.log('Sign Up failed: error :', err);
+        this.authError.set('Signup Failed. Please try again later.')
+      },
+    });
     }
 }
