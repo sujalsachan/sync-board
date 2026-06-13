@@ -21,7 +21,7 @@ export class Login {
     const loginData = this.loginForm.value;
 
     if(! (loginData.password && loginData.email) ) {
-      console.log("Empty fields found");
+      console.log("Empty fields found.");
       return;
     }
 
@@ -31,6 +31,6 @@ export class Login {
     }
 
     console.log('login ts', data);
-    this.authService.login( data );
+    this.authService.login(data);
   }
 }

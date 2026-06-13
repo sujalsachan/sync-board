@@ -5,6 +5,7 @@ import { environment } from "../../../environment";
 
 @Service() 
 export class AuthService {
+
     user = signal<User | null>(null);
     http = inject(HttpClient);
     url = environment.BACKEND_URL + '/auth';
@@ -13,22 +14,22 @@ export class AuthService {
 
     login(data: {}) {
         
-        this.http.post(this.url+'/login', data).subscribe({
+        this.http.post<User>(this.url+'/login', data).subscribe({
             next: (response) => {
-                console.log('Login Success', response);
+                console.log('Login Success');
+                this.user.set(response);
             }, 
             error:(err) => {
-                console.log('Login Failed', err);
+                console.log('Login Failed : ', err.error.message);
             } 
         })
-
-        console.log(this.user());
     }
 
     signup(data : {}) {
-         this.http.post(this.url + '/signup', data).subscribe({
+         this.http.post<User>(this.url + '/signup', data).subscribe({
       next: (response) => {
-        console.log('Sign Up success');
+        console.log('Sign Up success', response);
+        this.user.set(response);
       },
       error: (err) => {
         console.log('Sign Up failed: error :', err);
