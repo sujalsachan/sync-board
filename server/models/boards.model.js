@@ -1,0 +1,27 @@
+import mongoose, { Schema } from 'mongoose';
+
+const boardSchema = new mongoose.Schema({
+    title : {
+        type:String,
+        required : [true, 'Board title is required'],
+        trim : true
+    },
+    
+    owner : {
+        type : Schema.Types.ObjectId,
+        required : [true, 'Owner ID is required'],
+        ref: 'User'
+    },
+
+    lists : [{
+        type : Schema.Types.ObjectId,
+        ref : 'List'
+    }],
+
+    collaborators : [{
+        type :Schema.Types.ObjectId,
+        ref : 'User' 
+    }]
+}, {
+    timestamps:true
+})

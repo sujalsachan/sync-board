@@ -2,7 +2,7 @@
     <button class="flex-1" routerLink="boards">Boards</button>
     <h2 class="flex-1">SyncBoard</h2>
     @if (authService.user()) {
-        <h4>Username : {{authService.user()?.name ?? 'Login'}}</h4>
+        <h4>Username : {{authService.user()?.name}}</h4>
     } @else {
         <div class="d-flex gap-3 text-black">
             <h4 routerLink="/signup">Signup</h4>
