@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
+import { BoardsList } from './boards-list/boards-list';
 
 @Component({
   selector: 'app-boards',
-  imports: [],
+  imports: [BoardsList],
   templateUrl: './boards.html',
   styleUrl: './boards.scss',
 })
-export class Boards {}
+export class Boards {
+
+}

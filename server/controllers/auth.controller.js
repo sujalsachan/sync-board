@@ -24,7 +24,7 @@ export async function login(req, res) {
   }
 }
 
-export const signUp = async (req, res) => {
+export async function signUp(req, res) {
   console.log("Signing In");
 
   const newUser = req.body;

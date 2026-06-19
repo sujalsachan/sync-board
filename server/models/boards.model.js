@@ -1,27 +1,38 @@
-import mongoose, { Schema } from 'mongoose';
+import mongoose, { Schema } from "mongoose";
 
-const boardSchema = new mongoose.Schema({
-    title : {
-        type:String,
-        required : [true, 'Board title is required'],
-        trim : true
-    },
-    
-    owner : {
-        type : Schema.Types.ObjectId,
-        required : [true, 'Owner ID is required'],
-        ref: 'User'
+const boardSchema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      required: [true, "Board title is required"],
+      trim: true,
     },
 
-    lists : [{
-        type : Schema.Types.ObjectId,
-        ref : 'List'
-    }],
+    owner: {
+      type: Schema.Types.ObjectId,
+      required: [true, "Owner ID is required"],
+      ref: "User",
+    },
 
-    collaborators : [{
-        type :Schema.Types.ObjectId,
-        ref : 'User' 
-    }]
-}, {
-    timestamps:true
-})
+    lists: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "List",
+      },
+    ],
+
+    collaborators: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+  },
+  {
+    timestamps: true,
+  },
+);
+
+const Board = mongoose.model("Board", boardSchema);
+
+export default Board;

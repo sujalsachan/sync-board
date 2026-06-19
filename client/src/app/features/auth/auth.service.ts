@@ -18,14 +18,14 @@ export class AuthService {
         
         this.http.post<User>(this.url+'/login', data).subscribe({
             next: (response) => {
-                console.log('Login Success');
                 this.user.set(response);
+                console.log("User id : ", response._id);
+                this.router.navigate(['/']);
             }, 
             error:(err) => {
                 console.log('Login Failed : ', err.error.message);
             } 
         })
-        this.router.navigate(['/']);
     }
     
     signup(data : {}) {
@@ -34,13 +34,12 @@ export class AuthService {
                 console.log('Sign Up success', response);
                 this.user.set(response);
                 console.log(response);
-                console.log(response.name);
+                this.router.navigate(['/']);
             },
             error: (err) => {
                 console.log('Sign Up failed: error :', err);
                 this.authError.set('Signup Failed. Please try again later.')
             },
         });
-        this.router.navigate(['/']);
     }
 }

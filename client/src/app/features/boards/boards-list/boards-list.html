@@ -1,0 +1,70 @@
+<!-- Show My Boards -->
+<div
+  id="div-boards-list"
+  class="w-100 border border-1 border-black p-4 d-flex flex-row gap-4 fw-medium"
+>
+  <!-- List of Boards -->
+
+  <!-- Add Board -->
+  <div
+    id="div-add-board"
+    class="div-board-item d-flex align-items-center justify-content-center border border-1 border-black p-4 w-25"
+    (click)="toggleAddBoardForm()"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="40"
+      height="40"
+      fill="currentColor"
+      class="bi bi-plus"
+      viewBox="0 0 16 16"
+    >
+      <path
+        d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"
+      />
+    </svg>
+    New Board
+  </div>
+</div>
+
+<!-- Show Add Board Form -->
+@if (boardService.showAddBoard()) {
+  <div class="modal-overlay" (click)="toggleAddBoardForm()">
+    <div
+      class="div-add-board-form border border-1 border-black bg-white"
+      (click)="$event.stopPropagation()"
+    >
+      <form [formGroup]="addBoardForm" (ngSubmit)="handleAddBoard()" class="form-add-board p-4">
+        <div class="d-flex justify-content-center align-items-center gap-2 flex-column">
+          <label for="input-title" id="label-title" class="fw-medium fs-5">Title</label>
+          <input
+            type="text"
+            placeholder="Enter board title"
+            class="p-2"
+            formControlName="title"
+            required
+          />
+
+          <!-- Empty title error -->
+          @if (this.boardError()) {
+            <p class="text-danger m-0">{{ this.boardError() }}</p>
+          }
+          <!-- Backend error -->
+
+          @if (this.boardService.boardError()) {
+            <p class="text-danger m-0">{{ this.boardService.boardError() }}</p>
+          }
+          <button [disabled]="isLoadingAddBoard()" type="submit" class="w-100 btn border border-1 border-black p-2 rounded-0">
+            Add Board
+          </button>
+          <button
+            class="w-100 btn border border-1 border-black p-2 rounded-0"
+            (click)="toggleAddBoardForm()"
+          >
+            Close
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}
