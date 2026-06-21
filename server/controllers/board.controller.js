@@ -24,3 +24,23 @@ export async function addBoard(req, res) {
     res.status(400).send({message: err.message});
   }
 }
+
+export async function getAllBoards(req, res) {
+  
+  const userId = req.params.id;
+  
+  if(!userId) {
+    res.status(400).send({message : 'User Id required to fetch boards'});
+  }
+  
+  try {
+    const boards = await Board.find({
+      owner : userId
+    });
+    
+    res.status(200).send({boards});
+    
+  } catch (err) {
+    res.status(400).send({message : 'Failed to fetch boards'});
+  }
+}

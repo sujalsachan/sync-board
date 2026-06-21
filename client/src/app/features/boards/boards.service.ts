@@ -9,9 +9,9 @@ export class BoardService {
   authService = inject(AuthService);
   http = inject(HttpClient);
 
-  boardList = signal([]);
   showAddBoard = signal<Boolean>(false);
   boardError = signal('');
+  userBoards = signal<[]>([]);
 
   showBoardError(message: string) {
     this.boardError.set(message);
@@ -21,10 +21,9 @@ export class BoardService {
   }
 
   async addBoard(title: string) {
-
     const payload = {
       title: title,
-      userId : this.authService.user()?._id,
+      userId: this.authService.user()?._id,
     };
 
     this.http.post(this.URL + '/add-board', payload).subscribe({
@@ -38,4 +37,22 @@ export class BoardService {
       },
     });
   }
+  
+  
+  getBoards() {
+
+    const userId = this.authService.user()?._id;
+
+    console.log(`${this.URL}/all-boards/${userId}`);
+    this.http.get<{boards:[]}>(`${this.URL}/all-boards/${userId}`).subscribe({
+      next:(response) => {
+        this.userBoards.set(response.boards);
+      },
+
+      error(err) {
+        console.log(err.message);  
+      },
+    })
+  }
 }
+

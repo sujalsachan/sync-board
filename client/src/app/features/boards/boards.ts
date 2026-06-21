@@ -7,6 +7,6 @@ import { BoardsList } from './boards-list/boards-list';
   templateUrl: './boards.html',
   styleUrl: './boards.scss',
 })
-export class Boards {
+export class BoardsComponent {
 
 }

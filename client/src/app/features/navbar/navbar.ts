@@ -10,4 +10,9 @@ import { AuthService } from '../auth/auth.service';
 })
 export class Navbar {
   authService = inject(AuthService);
+
+  handleSignOut() {
+    this.authService.user.set(null);
+    localStorage.removeItem('user');
+  }
 }

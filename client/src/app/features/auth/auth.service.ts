@@ -1,4 +1,4 @@
-import { inject, Service, signal, Signal } from "@angular/core";
+import { inject, OnInit, Service, signal, Signal } from "@angular/core";
 import { User } from "./user.model";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "../../../environment";
@@ -14,11 +14,21 @@ export class AuthService {
     user = signal<User | null>(null);
     url = environment.BACKEND_URL + '/auth';
 
+    constructor() {
+
+        const storedUser = localStorage.getItem('user');
+        if( storedUser ){
+            console.log('User found in local', storedUser);
+            this.user.set(JSON.parse(storedUser));
+        }
+    }
+
     login(data: {}) {
         
         this.http.post<User>(this.url+'/login', data).subscribe({
             next: (response) => {
                 this.user.set(response);
+                localStorage.setItem('user', JSON.stringify(response));
                 console.log("User id : ", response._id);
                 this.router.navigate(['/']);
             }, 
@@ -33,7 +43,7 @@ export class AuthService {
             next: (response) => {
                 console.log('Sign Up success', response);
                 this.user.set(response);
-                console.log(response);
+                localStorage.setItem('user', JSON.stringify(response));
                 this.router.navigate(['/']);
             },
             error: (err) => {

@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, Signal, signal } from '@angular/core';
 import { BoardService } from '../boards.service';
 import {
   FormControl,
@@ -6,21 +6,27 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { Board } from './Board.js';
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-boards-list',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './boards-list.html',
   styleUrl: './boards-list.scss',
 })
-export class BoardsList {
+export class BoardsList implements OnInit {
   boardService = inject(BoardService);
-
+  
   boardError = signal('');
   isLoadingAddBoard = signal<Boolean>(false);
+  boardList : Signal<Board[]> = computed(() => {
+    return this.boardService.userBoards();
+  })
 
-  boardList = this.boardService.boardList;
-
+    ngOnInit(): void {
+      this.boardService.getBoards();
+    }
   addBoardForm = new FormGroup({
     title: new FormControl('', Validators.required),
   });
