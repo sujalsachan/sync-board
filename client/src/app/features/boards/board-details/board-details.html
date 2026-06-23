@@ -1,1 +1,30 @@
-@if () {}
+<div class="min-vh-100 min-vw-100 p-4" style="background-color: aquamarine">
+  <!-- Add List Button-->
+  @if (!showAddListForm()) {
+
+    <!-- @for (item of items; track $index) {} -->
+
+    <div class="d-flex" (click)="toggleAddListForm()">
+      <p class="p-2 bg-light fs-5">+ New list</p>
+    </div>
+  } @else {
+    <div class="p-2 bg-light w-25 p-3">
+      <!-- Add List Form-->
+      <form [formGroup]="addListForm" (ngSubmit)="addListFormSubmit()">
+        <div class="mb-3">
+          <label for="input-title" class="form-label fs-5">Enter list title</label>
+          <input class="form-control rounded-0 border border-1 border-black" id="input-title" type="text" formControlName="title" />
+        </div>
+        
+        <p class="text-danger fw-medium text-center"> {{this.addListFormError()}} </p>
+        <p class="text-success fw-medium text-center"> {{this.addListFormSuccess()}} </p>
+        
+
+        <div class="d-flex justify-content-between">
+            <button class="btn btn-dark rounded-0" type="submit">Create</button>
+        <button class="btn btn-dark rounded-0" (click)="toggleAddListForm()">Close</button>
+        </div>
+      </form>
+    </div>
+  }
+</div>

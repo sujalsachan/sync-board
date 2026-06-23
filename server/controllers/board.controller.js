@@ -1,4 +1,5 @@
-import Board from "../models/boards.model.js";
+import Board from "../models/board.model.js";
+import List from "../models/list.model.js";
 
 export async function addBoard(req, res) {
 
@@ -42,5 +43,26 @@ export async function getAllBoards(req, res) {
     
   } catch (err) {
     res.status(400).send({message : 'Failed to fetch boards'});
+  }
+}
+
+export async function addList(req, res) {
+  try {
+
+    const newList = {
+      ...req.body,
+      tasks : [],
+    };
+    
+    const createdList = await List.create(newList);
+
+    res.status(201).send({
+      createdList
+    });
+    
+  } catch (err) {
+    res.status(400).send({
+      message : 'Failed to insert list : ', err
+    })
   }
 }

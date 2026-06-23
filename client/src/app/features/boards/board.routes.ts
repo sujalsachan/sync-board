@@ -9,7 +9,7 @@ export const boardRoutes : Routes = [
     },
 
     {
-        path:'boardDetails/:id',
+        path:'boardDetails/:boardId',
         component:BoardDetails
     }
     

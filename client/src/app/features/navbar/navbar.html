@@ -1,5 +1,5 @@
 <div class="navbar border border-black p-2 w-100 h-25 d-flex justify-content-between align-items-center">
-    <button class="flex-1" routerLink="/boards">Boards</button>
+    <button class="flex-1" routerLink="boards">Boards</button>
     <h2 class="flex-1">SyncBoard</h2>
     @if (authService.user()) {
         <h4>Username : {{authService.user()?.name}}</h4>

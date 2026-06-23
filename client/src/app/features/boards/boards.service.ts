@@ -37,22 +37,42 @@ export class BoardService {
       },
     });
   }
-  
-  
-  getBoards() {
 
+  getBoards() {
     const userId = this.authService.user()?._id;
 
     console.log(`${this.URL}/all-boards/${userId}`);
-    this.http.get<{boards:[]}>(`${this.URL}/all-boards/${userId}`).subscribe({
-      next:(response) => {
+    this.http.get<{ boards: [] }>(`${this.URL}/all-boards/${userId}`).subscribe({
+      next: (response) => {
         this.userBoards.set(response.boards);
       },
 
       error(err) {
-        console.log(err.message);  
+        console.log(err.message);
       },
-    })
+    });
+  }
+
+  // Add list to Board with provided id
+
+  addList(boardId: string, title: string) {
+    try {
+      this.http
+        .post(`${this.URL}/addList`, {
+          boardId,
+          title,
+        })
+        .subscribe({
+          next: (respnonse) => {
+            console.log(respnonse);
+          },
+          error(err) {
+            throw err;
+          },
+        });
+    } catch (err) {
+      console.log('addList error ', err);
+      throw err;
+    }
   }
 }
-
