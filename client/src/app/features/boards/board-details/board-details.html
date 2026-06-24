@@ -1,9 +1,19 @@
 <div class="min-vh-100 min-vw-100 p-4" style="background-color: aquamarine">
+  
+  
+  <!-- All lists -->
+   @if (this.allLists()) {
+    <div class="d-flex gap-3 m-5 flex-wrap justify-content-between">
+      @for (list of this.allLists(); track $index) {    
+        <div class="bg-light w-25 p-3 text-center ">
+          <p class="fw-medium">{{list.title}}</p>
+        </div>
+      }
+    </div>
+   }
+  
   <!-- Add List Button-->
   @if (!showAddListForm()) {
-
-    <!-- @for (item of items; track $index) {} -->
-
     <div class="d-flex" (click)="toggleAddListForm()">
       <p class="p-2 bg-light fs-5">+ New list</p>
     </div>

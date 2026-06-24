@@ -2,16 +2,20 @@ import { inject, Service, signal } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environment';
+import { List } from './board-details/List.js';
 
 @Service()
 export class BoardService {
-  URL = environment.BACKEND_URL + '/board';
+
+  envURL = environment.BACKEND_URL;
+  URL =  this.envURL + '/board';
   authService = inject(AuthService);
   http = inject(HttpClient);
 
   showAddBoard = signal<Boolean>(false);
   boardError = signal('');
   userBoards = signal<[]>([]);
+  currBoardLists = signal<[List] | null>(null);
 
   showBoardError(message: string) {
     this.boardError.set(message);
@@ -74,5 +78,17 @@ export class BoardService {
       console.log('addList error ', err);
       throw err;
     }
+  }
+
+  getLists(boardId : string) {
+    this.http.get<[List]>(`${this.envURL}/list/${boardId}`).subscribe({
+        next: (res) => {
+          console.log(res);
+          this.currBoardLists.set(res);
+        },
+        error(err) {
+          console.log(err);
+        }
+      }) 
   }
 }

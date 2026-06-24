@@ -1,4 +1,4 @@
-import { Component, inject, input, Input, OnInit, signal, Signal } from '@angular/core';
+import { Component, computed, effect, inject, input, Input, OnInit, signal, Signal } from '@angular/core';
 import { List } from './List';
 import {
   ɵInternalFormsSharedModule,
@@ -16,11 +16,9 @@ import { BoardService } from '../boards.service';
   styleUrl: './board-details.scss',
 })
 export class BoardDetails implements OnInit {
-
   boardService = inject(BoardService);
 
   boardId = input<string>();
-  allLists = signal<List[]>([]);
   showAddListForm = signal<boolean>(false);
   addListFormError = signal<string>('');
   addListFormSuccess = signal<string>('');
@@ -29,6 +27,19 @@ export class BoardDetails implements OnInit {
     title: new FormControl('', Validators.required),
   });
 
+  allLists : Signal<[List] | null> = computed(() => {
+    return this.boardService.currBoardLists();
+  })
+
+  constructor() {
+    effect(() => {
+      const id = this.boardId();
+
+      if (id) {
+        this.boardService.getLists(id);
+      }
+    });
+  }
 
   ngOnInit(): void {
     console.log(this.boardId());
@@ -57,20 +68,25 @@ export class BoardDetails implements OnInit {
     try {
       const currBoardId = this.boardId();
 
-      if(!currBoardId) {
+      if (!currBoardId) {
         throw new Error('Board Id not Found');
       }
-      
+
       this.boardService.addList(currBoardId, title);
       this.addListFormSuccess.set('List Created');
       this.addListForm.reset();
+      
       setTimeout(() => {
         this.addListFormSuccess.set('');
         this.toggleAddListForm();
+        const updatedBoardId = this.boardId();
+        
+        if (updatedBoardId) {
+          this.boardService.getLists(updatedBoardId);
+        }
       }, 2000);
-
     } catch (err) {
-      this.showError('Internal Server Error. Please try again later.')
+      this.showError('Internal Server Error. Please try again later.');
       console.log('Error while adding List to Board : ', err);
     }
   }
