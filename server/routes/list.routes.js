@@ -1,12 +1,9 @@
-import express, { Router } from 'express';
-import { getLists } from '../controllers/list.controller.js';
+import express, { Router } from "express";
+import { deleteList, getLists } from "../controllers/list.controller.js";
 
 const router = express.Router();
 
-router.get('', (req, res) => {
-    res.send("List route hit")
-});
-
-router.get('/:id', getLists);
+router.get("/:id", getLists);
+router.delete("/delete", deleteList);
 
 export default router;

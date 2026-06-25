@@ -1,4 +1,14 @@
-import { Component, computed, effect, inject, input, Input, OnInit, signal, Signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  Input,
+  OnInit,
+  signal,
+  Signal,
+} from '@angular/core';
 import { List } from './List';
 import {
   ɵInternalFormsSharedModule,
@@ -27,9 +37,9 @@ export class BoardDetails implements OnInit {
     title: new FormControl('', Validators.required),
   });
 
-  allLists : Signal<[List] | null> = computed(() => {
+  allLists: Signal<[List] | null> = computed(() => {
     return this.boardService.currBoardLists();
-  })
+  });
 
   constructor() {
     effect(() => {
@@ -56,6 +66,20 @@ export class BoardDetails implements OnInit {
     }, 2000);
   }
 
+  deleteList(listId: string) {
+    if (!this.boardId() || !listId) {
+      console.log('board Id or list Id empty');
+      return;
+    }
+
+    this.boardService.deleteList(this.boardId()!, listId);
+    const updatedBoardId = this.boardId();
+
+    if (updatedBoardId) {
+      this.boardService.getLists(updatedBoardId);
+    }
+  }
+
   addListFormSubmit() {
     const title = this.addListForm.value.title;
     console.log('Title : ', title);
@@ -75,12 +99,12 @@ export class BoardDetails implements OnInit {
       this.boardService.addList(currBoardId, title);
       this.addListFormSuccess.set('List Created');
       this.addListForm.reset();
-      
+
       setTimeout(() => {
         this.addListFormSuccess.set('');
         this.toggleAddListForm();
         const updatedBoardId = this.boardId();
-        
+
         if (updatedBoardId) {
           this.boardService.getLists(updatedBoardId);
         }

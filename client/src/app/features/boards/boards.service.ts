@@ -6,9 +6,8 @@ import { List } from './board-details/List.js';
 
 @Service()
 export class BoardService {
-
   envURL = environment.BACKEND_URL;
-  URL =  this.envURL + '/board';
+  URL = this.envURL + '/board';
   authService = inject(AuthService);
   http = inject(HttpClient);
 
@@ -57,7 +56,7 @@ export class BoardService {
     });
   }
 
-  // Add list to Board with provided id
+  // Add list to Board
 
   addList(boardId: string, title: string) {
     try {
@@ -80,15 +79,31 @@ export class BoardService {
     }
   }
 
-  getLists(boardId : string) {
+  getLists(boardId: string) {
     this.http.get<[List]>(`${this.envURL}/list/${boardId}`).subscribe({
-        next: (res) => {
+      next: (res) => {
+        console.log(res);
+        this.currBoardLists.set(res);
+      },
+      error(err) {
+        console.log(err);
+      },
+    });
+  }
+
+  deleteList(boardId: string, listId: string) {
+    try {
+      this.http.delete(`${this.envURL}/list/delete`, { body: { boardId, listId } }).subscribe({
+        next:(res) => {
           console.log(res);
-          this.currBoardLists.set(res);
         },
-        error(err) {
+
+        error:(err) => {
           console.log(err);
         }
-      }) 
+      })
+    } catch (error) {
+      console.log(error);
+    }
   }
 }

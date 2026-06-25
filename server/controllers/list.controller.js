@@ -10,10 +10,10 @@ export async function getLists(req, res) {
   }
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(400).json({ 
-        message: 'Invalid Board ID format. Must be a 24-character hex string.' 
-      });
-}
+    return res.status(400).json({
+      message: "Invalid Board ID format. Must be a 24-character hex string.",
+    });
+  }
 
   try {
     const lists = await List.find({
@@ -24,5 +24,17 @@ export async function getLists(req, res) {
   } catch (err) {
     console.log(err);
     res.status(500).send(err.message);
+  }
+}
+
+export async function deleteList(req, res) {
+  const {boardId, listId } = req.body;
+
+  try {
+    const deletedList = await List.deleteOne({
+      _id : listId
+    });
+  } catch(err) {
+    console.log(err);
   }
 }

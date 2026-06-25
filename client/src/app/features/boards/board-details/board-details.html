@@ -6,7 +6,10 @@
     <div class="d-flex gap-3 m-5 flex-wrap justify-content-between">
       @for (list of this.allLists(); track $index) {    
         <div class="bg-light w-25 p-3 text-center ">
-          <p class="fw-medium">{{list.title}}</p>
+          <div class="d-flex text-center justify-content-between px-4">
+            <p class="fw-medium">{{list.title}}</p>
+          <button class="btn btn-close" (click)="deleteList(list._id)"></button>
+          </div>
         </div>
       }
     </div>
